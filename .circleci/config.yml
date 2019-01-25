@@ -9,7 +9,8 @@ jobs:
       - checkout
       - run:
           command: |
-            python -m venv powtoon
+            pip install virtualenv
+            virtualenv -p python powtoon
             . powtoon/bin/activate
             pip install -r requirements.txt
       - save_cache:
