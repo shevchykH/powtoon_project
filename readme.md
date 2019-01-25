@@ -1,7 +1,7 @@
 
-#####The task is to create a small Django app, that represents powtoons and permissions web application.
+#### The task is to create a small Django app, that represents powtoons and permissions web application.
 
-#####Application requirements:
+#### Application requirements:
 
 1. The app should have the following models:
     * a. Powtoon - represents a powtoon (video), should have name field, a
