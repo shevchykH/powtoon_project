@@ -17,3 +17,7 @@ class Powtoon(models.Model):
 
     class Meta:
         ordering = ('created',)
+
+    @property
+    def owner(self):
+        return self.user.username

@@ -5,12 +5,12 @@ from models import Powtoon
 class PowtoonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Powtoon
-        fields = ('id', 'name', 'content_json')
+        fields = ('id', 'name', 'content_json', 'shared_with_users', 'owner')
         read_only_fields = ['user']
 
 
 class SharePowtoonWithUserSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(min_value=1)
+    user_id = serializers.IntegerField()
 
     class Meta:
         model = Powtoon
