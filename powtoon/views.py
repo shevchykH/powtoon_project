@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-from powtoon.permissions import UserPermission, PowToonViewDetailPermission, SharePermission
+from powtoon.permissions import PowToonDetailPermission, SharePermission
 from powtoon.models import Powtoon
 from powtoon.serializers import PowtoonSerializer, SharePowtoonWithUserSerializer
 
@@ -17,7 +17,6 @@ def get_shared_powtoons(user_pk):
 
 
 class PowtoonListView(generics.ListCreateAPIView):
-    permission_classes = [UserPermission]
     serializer_class = PowtoonSerializer
 
     def get_queryset(self):
@@ -33,13 +32,13 @@ class PowtoonListView(generics.ListCreateAPIView):
 class PowtoonDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Powtoon.objects.all()
     serializer_class = PowtoonSerializer
-    permission_classes = [UserPermission, PowToonViewDetailPermission]
+    permission_classes = [PowToonDetailPermission]
 
 
 class SharePowtoonView(generics.CreateAPIView):
     queryset = Powtoon.objects.all()
     serializer_class = SharePowtoonWithUserSerializer
-    permission_classes = [UserPermission, SharePermission]
+    permission_classes = [SharePermission]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -55,7 +54,6 @@ class SharePowtoonView(generics.CreateAPIView):
 
 class SharedPowtoonList(generics.ListAPIView):
     serializer_class = PowtoonSerializer
-    permission_classes = [UserPermission]
 
     def get_queryset(self):
         return get_shared_powtoons(self.request.user.id)

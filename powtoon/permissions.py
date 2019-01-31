@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from rest_framework import permissions, status
 from rest_framework.response import Response
 
@@ -58,29 +58,13 @@ def check_permission(user, perm_code):
     return Response(status=status.HTTP_403_FORBIDDEN)
 
 
-class UserPermission(permissions.BasePermission):
-
-    def has_permission(self, request, view):
-        if not request.user.is_authenticated():
-            return False
-
-        return True
-
-
 class SharePermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == "POST":
             return obj.user == request.user
 
 
-def is_in_group(user, group_name):
-    try:
-        return Group.objects.get(name=group_name).user_set.filter(id=user.id).exists()
-    except Group.DoesNotExist:
-        return False
-
-
-class PowToonViewDetailPermission(permissions.BasePermission):
+class PowToonDetailPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == "GET":
             user = User.objects.get(pk=request.user.id)
