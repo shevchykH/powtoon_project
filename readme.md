@@ -25,7 +25,8 @@
 model:
     * a. Allow to share a powtoon.
     * b. Allow to get a powtoon that is not shared with me and I’m not its owner.
-    * 4. Create and load a fixture of the following groups records to the Group model:
+
+4. Create and load a fixture of the following groups records to the Group model:
     * a. Admin group that holds both permissions mentioned above.
 
 5. Clarifications:
