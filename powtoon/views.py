@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics, status
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from powtoon.permissions import PowToonDetailPermission, SharePermission
 from powtoon.models import Powtoon
@@ -27,13 +28,13 @@ class PowtoonListView(generics.ListCreateAPIView):
 class PowtoonDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Powtoon.objects.all()
     serializer_class = PowtoonSerializer
-    permission_classes = [PowToonDetailPermission]
+    permission_classes = [IsAuthenticated, PowToonDetailPermission]
 
 
 class SharePowtoonView(generics.CreateAPIView):
     queryset = Powtoon.objects.all()
     serializer_class = SharePowtoonWithUserSerializer
-    permission_classes = [SharePermission]
+    permission_classes = [IsAuthenticated, SharePermission]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
