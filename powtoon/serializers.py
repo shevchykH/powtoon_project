@@ -5,7 +5,7 @@ from models import Powtoon
 class PowtoonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Powtoon
-        fields = ('id', 'name', 'content_json', 'shared_with_users', 'owner')
+        fields = ('id', 'name', 'content_json', 'owner')
         read_only_fields = ['user']
 
 
