@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, status
-from rest_framework.response import Response
+from rest_framework import permissions
 
 
 CAN_GET_POWTOON = 'can_get_powtoon'
@@ -53,9 +52,7 @@ ADMIN_GROUP_PERMISSIONS = [
 
 
 def check_permission(user, perm_code):
-    if user.has_perm(perm_code):
-        return True
-    return Response(status=status.HTTP_403_FORBIDDEN)
+    return user.user_permissions.filter(codename=perm_code).count()
 
 
 class SharePermission(permissions.BasePermission):
@@ -67,12 +64,14 @@ class SharePermission(permissions.BasePermission):
 class PowToonDetailPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == "GET":
+            if request.user == obj.user:
+                return True
             user = User.objects.get(pk=request.user.id)
             if obj.shared_with_users.filter(username=user.username).count():
                 return check_permission(user, CAN_VIEW_SHARED_POWTOON_DETAIL)
             return check_permission(user, CAN_VIEW_NOT_SHARED_POWTOON) or \
-                   check_permission(user, CAN_VIEW_NOT_OWN_POWTOON)
+                check_permission(user, CAN_VIEW_NOT_OWN_POWTOON)
 
-        if request.method in ["GET", "PUT", "DELETE"]:
+        if request.method in ["PUT", "DELETE"]:
             return request.user == obj.user
 
