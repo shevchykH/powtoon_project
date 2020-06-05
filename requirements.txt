@@ -1,6 +1,6 @@
 certifi==2018.11.29
 chardet==3.0.4
-Django==1.11.18
+Django==1.11.29
 django-jsonfield==1.0.1
 djangorestframework==3.9.0
 httpie==1.0.2
